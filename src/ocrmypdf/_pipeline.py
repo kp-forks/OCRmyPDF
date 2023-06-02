@@ -185,15 +185,6 @@ def validate_pdfinfo_options(context: PdfContext) -> None:
             "Designer and can only be read by Adobe Acrobat or Adobe Reader."
         )
         raise InputFileError()
-    if pdfinfo.has_userunit and options.output_type.startswith('pdfa'):
-        log.error(
-            "This input file uses a PDF feature that is not supported "
-            "by Ghostscript, so you cannot use --output-type=pdfa for this "
-            "file. (Specifically, it uses the PDF-1.6 /UserUnit feature to "
-            "support very large or small page sizes, and Ghostscript cannot "
-            "output these files.)  Use --output-type=pdf instead."
-        )
-        raise InputFileError()
     if pdfinfo.has_acroform:
         if options.redo_ocr:
             log.error(
@@ -900,11 +891,11 @@ def copy_final(
     log.debug('%s -> %s', input_file, output_file)
     with input_file.open('rb') as input_stream:
         if output_file == '-':
-            copyfileobj(input_stream, sys.stdout.buffer)
+            copyfileobj(input_stream, sys.stdout.buffer)  # type: ignore[misc]
             sys.stdout.flush()
         elif hasattr(output_file, 'writable'):
             output_stream = cast(BinaryIO, output_file)
-            copyfileobj(input_stream, output_stream)
+            copyfileobj(input_stream, output_stream)  # type: ignore[misc]
             with suppress(AttributeError):
                 output_stream.flush()
         else:

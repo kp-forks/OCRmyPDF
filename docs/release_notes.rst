@@ -28,6 +28,37 @@ tagged yet.
 
 .. |OCRmyPDF PyPI| image:: https://img.shields.io/pypi/v/ocrmypdf.svg
 
+v14.2.1
+=======
+
+-  Fixed :issue:`977`, where images inside Form XObjects were always excluded
+   from image optimization.
+
+v14.2.0
+=======
+
+-  Added `--tesseract-downsample-above` to downsample larger images even when
+   they do not exceed Tesseract's internal limits. This can be used to speed
+   up OCR, possibly sacrificing accuracy.
+-  Fixed resampling AttributeError on older Pillow. :issue:`1096`
+-  Removed an error about using Ghostscript on PDFs with that have the /UserUnit
+   feature in use. Previously, Ghostscript would fail to process these PDFs,
+   but in all supported versions it is now supported, so the error is no longer
+   needed.
+-  Improved documentation around installing other language packs for Tesseract.
+
+v14.1.0
+=======
+
+-  Added ``--tesseract-non-ocr-timeout``. This allows using Tesseract's deskew
+   and other non-OCR features while disabling OCR using ``--tesseract-timeout 0``.
+-  Added ``--tesseract-downsample-large-images``. This downsamples larges images
+   that exceed the maximum image size Tesseract can handle. Large images may still
+   take a long time to process, but this allows them to be processed if that
+   is desired.
+-  Fixed :issue:`1082`, an issue with snap packaged building.
+-  Change linter to ruff, fix lint errors, update documentation.
+
 v14.0.4
 =======
 
